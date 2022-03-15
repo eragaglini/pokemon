@@ -4,18 +4,6 @@
 #include <vector>
 #include <iostream>
 
-// mixin to check if pokemon copy constructor is invoked
-template<class D>
-struct traced
-{
-public:
-    traced() = default;
-    traced(traced const&) { std::cout << typeid(D).name() << " copy ctor\n"; }
-
-protected:
-    ~traced() = default;
-};
-
 enum class moveCategory {physicalMove, specialMove};
 
 class PokemonMove {
@@ -40,7 +28,7 @@ class PokemonMove {
         moveCategory GetCategory(void) const { return this->category; }
 };
 
-class Pokemon : public traced<Pokemon> {
+class Pokemon {
     public:
         // constructor
         Pokemon(const std::string name, std::vector<std::string> types, 

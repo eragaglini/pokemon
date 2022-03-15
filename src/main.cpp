@@ -20,12 +20,10 @@ int main()
   PokemonTrainer player = PokemonTrainer({charmander});
   PokemonTrainer enemy = PokemonTrainer({squirtle});
 
-  //PokemonBattle battle = PokemonBattle(player, enemy);
+  PokemonBattle battle = PokemonBattle(player, enemy);
 
-  Common::slow_print(player.getCurrentPokemon()->GetName());
-  Common::slow_print(enemy.getCurrentPokemon()->GetName());
+  battle.battleLoop();
   
-  //battle.battleLoop();
 
   return 0;
 }

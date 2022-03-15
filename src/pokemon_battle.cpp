@@ -13,15 +13,19 @@ PokemonBattle::~PokemonBattle()
 }
 
 void PokemonBattle::battleLoop() {
-    Common::slow_print("battaglia cominciata!!");
+    Common::slow_print("Comincia la battaglia!!");
     std::vector<Pokemon> player_pokemons = player->GetPokemons();
-    while (std::any_of(player_pokemons.begin(), player_pokemons.end(), [](Pokemon i) { return i.IsAlive(); }))
+    std::vector<Pokemon> enemy_pokemons = enemy->GetPokemons();
+    while (std::any_of(player_pokemons.begin(), player_pokemons.end(), [](Pokemon i) { return i.IsAlive(); })
+    &&
+    std::any_of(enemy_pokemons.begin(), enemy_pokemons.end(), [](Pokemon i) { return i.IsAlive(); })
+    )
     {
         /* code */
-        Common::slow_print("turno di battaglia");
-        player->getCurrentPokemon()->TakeDamage(1000);
+        enemy->getCurrentPokemon()->TakeDamage(1000);
 
         player_pokemons = player->getPokemons();
+        enemy_pokemons = enemy->getPokemons();
     }
-    Common::slow_print("battaglia terminata");
+    
 }

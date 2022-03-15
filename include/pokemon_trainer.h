@@ -13,10 +13,11 @@ private:
     std::vector<Pokemon> pokemons;
 
 public:
-    PokemonTrainer(std::vector<Pokemon> pokemons) : pokemons(pokemons) { this->current_pokemon = &(this->GetPokemons()[0]); }
+    PokemonTrainer(std::vector<Pokemon> pokemons) : pokemons(pokemons) {     this->setCurrentPokemon(0); }
     ~PokemonTrainer();
     std::vector<Pokemon> GetPokemons(void) const { return this->pokemons; }
     Pokemon * getCurrentPokemon() const { return (this->current_pokemon); }
+    void setCurrentPokemon(int index) { this->current_pokemon = &(this->pokemons[index]); }
     std::vector<Pokemon> getPokemons() const { return (this->pokemons); }
 
     int changePokemon();
