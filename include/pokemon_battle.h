@@ -25,6 +25,9 @@ public:
     std::unordered_map<std::string, std::unordered_map<std::string, double>> 
     GetPokemonTypesMap(void) const { return this->pokemon_types_map; }
 
+    // method to get trainer choices
+    std::vector<int> getTrainerChoice(PokemonTrainer &trainer);
+
     // battle loop
     void battleLoop();
 };

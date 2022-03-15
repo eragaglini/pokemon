@@ -3,7 +3,7 @@
 int PokemonTrainer::changePokemon() {
     for (size_t i = 0; i < this->getPokemons().size(); i++)
         {
-        if (!this->getPokemons()[i].IsAlive())
+        if (this->getPokemons()[i].IsAlive())
             std::cout << i << ": " << this->getPokemons()[i].GetName() << " ";
         }
     std::cout << std::endl;
@@ -13,6 +13,7 @@ int PokemonTrainer::changePokemon() {
     std::cout << x << std::endl;
     return x;
 };
+
 
 int PokemonTrainer::usePokemonMove() {
       for (size_t i = 0; i < this->getCurrentPokemon()->GetMoves().size(); i++)

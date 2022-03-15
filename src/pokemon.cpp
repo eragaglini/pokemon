@@ -14,7 +14,6 @@ void Pokemon::UsePokemonMove(int index, Pokemon & target) {
     else {
         damage = this->GetMoves()[index].GetPower() * this->GetSpecialAttack() / target.GetSpecialDefense();
     }
-    std::cout << damage << std::endl;
     target.TakeDamage(damage);
 };
 
