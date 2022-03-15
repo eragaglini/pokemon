@@ -1,17 +1,6 @@
 #include "pokemon_battle.h"
 #include <iostream>
 
-typedef void(*FUNCPTR)(PokemonTrainer &trainer, int index); // our typedef
-
-// some functions
-void changePokemon(PokemonTrainer &trainer, int index) {
-  Common::slow_print(trainer.getCurrentPokemon()->GetName() + " rientra!!");
-  trainer.setCurrentPokemon(index);
-  Common::slow_print("Vai " + trainer.getCurrentPokemon()->GetName() + " !!");
-}
-
-std::unordered_map<int, FUNCPTR> func_map = {{0, changePokemon}};
-
 PokemonBattle::PokemonBattle(PokemonTrainer &_player, PokemonTrainer &_enemy)
 {
     player = &_player;
@@ -85,8 +74,33 @@ void PokemonBattle::battleLoop() {
             }
         }
         else {
-            func_map[player_choices[0]](*player, player_choices[1]);
-            func_map[enemy_choices[0]](*player, enemy_choices[1]);
+            if (player_choices[0] == 1)
+            {
+                /* code */
+                Common::slow_print(player->getCurrentPokemon()->GetName() + " rientra!");
+                player->setCurrentPokemon(player_choices[1]);
+                Common::slow_print("Vai " + player->getCurrentPokemon()->GetName() + "!!");
+                if (enemy_choices[0] == 1)
+                {
+                    /* code */
+                    Common::slow_print(enemy->getCurrentPokemon()->GetName() + " rientra!");
+                    enemy->setCurrentPokemon(enemy_choices[1]);
+                    Common::slow_print("Vai " + enemy->getCurrentPokemon()->GetName() + "!!");
+                }
+                else {
+                    Pokemon target = *player->getCurrentPokemon();
+                    enemy->getCurrentPokemon()->UsePokemonMove(enemy_choices[1], target);
+                }
+            }
+            else
+            {
+                /* code */
+                Pokemon target = *enemy->getCurrentPokemon();
+                player->getCurrentPokemon()->UsePokemonMove(player_choices[1], target);
+                Common::slow_print(enemy->getCurrentPokemon()->GetName() + " rientra!");
+                enemy->setCurrentPokemon(enemy_choices[1]);
+                Common::slow_print("Vai " + enemy->getCurrentPokemon()->GetName() + "!!");
+            }
         };
 
         player_pokemons = player->getPokemons();

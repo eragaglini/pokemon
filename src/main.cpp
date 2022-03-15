@@ -13,7 +13,7 @@ int main()
 
   // Squirtle
   PokemonMove tackle = PokemonMove("Tackle", 35, 40, moveCategory::physicalMove, "normal");
-  PokemonMove water_gun = PokemonMove("Ember", 25, 40, moveCategory::specialMove, "water");
+  PokemonMove water_gun = PokemonMove("Water Gun", 25, 40, moveCategory::specialMove, "water");
 
   Pokemon squirtle = Pokemon("Squirtle", {"water"}, 48, 65, 50, 64, 43, 44, {tackle, water_gun});
 
