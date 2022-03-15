@@ -1,6 +1,9 @@
 #include "pokemon.h"
 #include "common.h"
 
+PokemonMove::~PokemonMove()
+{
+}
 
 void Pokemon::UsePokemonMove(int index, Pokemon & target) {
     Common::slow_print(this->GetName() + " usa " + this->GetMoves()[index].GetName() + "!!");
@@ -47,3 +50,9 @@ void Pokemon::Heal(const int hp) {
     }
     Common::slow_print(this->GetName() + " è fuori combattimento!");
 };
+
+
+
+Pokemon::~Pokemon()
+{
+}

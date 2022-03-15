@@ -1,4 +1,4 @@
-#include "pokemon.h"
+#include "pokemon_battle.h"
 #include "common.h"
 
 using namespace std;
@@ -16,5 +16,16 @@ int main()
   PokemonMove water_gun = PokemonMove("Ember", 25, 40, moveCategory::specialMove, "water");
 
   Pokemon squirtle = Pokemon("Squirtle", {"water"}, 48, 65, 50, 64, 43, 44, {tackle, water_gun});
+
+  PokemonTrainer player = PokemonTrainer({charmander});
+  PokemonTrainer enemy = PokemonTrainer({squirtle});
+
+  //PokemonBattle battle = PokemonBattle(player, enemy);
+
+  Common::slow_print(player.getCurrentPokemon()->GetName());
+  Common::slow_print(enemy.getCurrentPokemon()->GetName());
+  
+  //battle.battleLoop();
+
   return 0;
 }

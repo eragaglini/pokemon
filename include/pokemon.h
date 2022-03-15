@@ -2,6 +2,19 @@
 #define POKEMON_H_INCLUDED
 #include <string>
 #include <vector>
+#include <iostream>
+
+// mixin to check if pokemon copy constructor is invoked
+template<class D>
+struct traced
+{
+public:
+    traced() = default;
+    traced(traced const&) { std::cout << typeid(D).name() << " copy ctor\n"; }
+
+protected:
+    ~traced() = default;
+};
 
 enum class moveCategory {physicalMove, specialMove};
 
@@ -13,10 +26,13 @@ class PokemonMove {
         moveCategory category;
         std::string type;
     public:
+        // constructor
         PokemonMove(const std::string name, const int power_points, 
         const int power, moveCategory category, std::string type) : 
         name(name), power_points(power_points), power(power),
         category(category), type(type) { }
+        // destructor
+        ~PokemonMove();
         int GetPowerPoints(void) const { return this->power_points; }
         int GetPower(void) const { return this->power; }
         std::string GetName(void) const { return this->name; }
@@ -24,7 +40,7 @@ class PokemonMove {
         moveCategory GetCategory(void) const { return this->category; }
 };
 
-class Pokemon {
+class Pokemon : public traced<Pokemon> {
     public:
         // constructor
         Pokemon(const std::string name, std::vector<std::string> types, 
@@ -32,7 +48,9 @@ class Pokemon {
         const int special_attack, const int special_defense, const int speed,
         const int max_hp, std::vector<PokemonMove> moves) : name(name), types(types), attack(attack), defense(defense), 
         special_attack(special_attack), special_defense(special_defense),
-        speed(speed), max_hp(max_hp), hp(max_hp), moves(moves), isAlive(true) {  };
+        speed(speed), max_hp(max_hp), hp(max_hp), moves(moves), isAlive(true) {  }
+        // destructor
+        ~Pokemon();
         // getter methods 
         std::string GetName(void) const { return this->name; }
         int GetAttack(void) const { return this->attack; }
@@ -60,4 +78,4 @@ class Pokemon {
         std::vector<PokemonMove> moves;
         bool isAlive;
 };
-#endif // DATA_H_INCLUDED
+#endif // POKEMON_H_INCLUDED
