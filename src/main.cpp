@@ -17,8 +17,19 @@ int main()
 
   Pokemon squirtle = Pokemon("Squirtle", {"water"}, 48, 65, 50, 64, 43, 440, {tackle, water_gun});
 
-  PokemonTrainer player = PokemonTrainer({charmander});
-  PokemonTrainer enemy = PokemonTrainer({squirtle});
+  // Bulbasaur
+  PokemonMove vine_whip = PokemonMove("Vine Whip", 25, 45, moveCategory::specialMove, "grass");
+
+  Pokemon bulbasaur = Pokemon("Bulbasaur", {"grass"}, 49, 49, 65, 65, 45, 450, {tackle, vine_whip});
+
+  // Pikachu
+  PokemonMove nuzzle = PokemonMove("Nuzzle", 20, 20, moveCategory::physicalMove, "electric");
+
+  Pokemon pikachu = Pokemon("Pikachu", {"electric"}, 55, 40, 50, 50, 90, 350, {tackle, vine_whip});
+
+
+  PokemonTrainer player = PokemonTrainer({charmander, bulbasaur});
+  PokemonTrainer enemy = PokemonTrainer({squirtle, pikachu});
 
   PokemonBattle battle = PokemonBattle(player, enemy);
 

@@ -27,6 +27,7 @@ class PokemonMove {
         std::string GetName(void) const { return this->name; }
         std::string GetType(void) const { return this->type; }
         moveCategory GetCategory(void) const { return this->category; }
+        void SetPowerPoints(const int power_points) { this->power_points = power_points; }
 };
 
 class Pokemon {

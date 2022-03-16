@@ -7,15 +7,23 @@ PokemonMove::~PokemonMove()
 
 void Pokemon::UsePokemonMove(int index, Pokemon & target, std::unordered_map<std::string, std::unordered_map<std::string, double>> 
     & pokemon_type_map) {
-    Common::slow_print(this->GetName() + " usa " + this->GetMoves()[index].GetName() + "!!");
-    int damage = 0;
-    if (this->GetMoves()[index].GetCategory() == moveCategory::physicalMove) {
-        damage = this->GetMoves()[index].GetPower() * this->GetAttack() / target.GetDefense();
+    if (this->moves[index].GetPowerPoints() > 0) {
+        Common::slow_print(this->GetName() + " usa " + this->GetMoves()[index].GetName() + "!!");
+        int damage = 0;
+        if (this->moves[index].GetCategory() == moveCategory::physicalMove) {
+            damage = this->moves[index].GetPower() * this->GetAttack() / target.GetDefense();
+        }
+        else {
+            damage = this->moves[index].GetPower() * this->GetSpecialAttack() / target.GetSpecialDefense();
+        }
+        // gestione del danno sulla base dei vari tipi
+        
+        target.TakeDamage(damage);
+        this->moves[index].SetPowerPoints(this->moves[index].GetPowerPoints() - 1);
     }
     else {
-        damage = this->GetMoves()[index].GetPower() * this->GetSpecialAttack() / target.GetSpecialDefense();
+        Common::slow_print("La mossa non ha più pp disponibili!!!");
     }
-    target.TakeDamage(damage);
 };
 
 void Pokemon::TakeDamage(const int hp) {
