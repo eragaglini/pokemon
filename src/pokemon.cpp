@@ -16,8 +16,37 @@ void Pokemon::UsePokemonMove(int index, Pokemon & target, std::unordered_map<std
         else {
             damage = this->moves[index].GetPower() * this->GetSpecialAttack() / target.GetSpecialDefense();
         }
+        // se uno dei tipi del pokemon corrisponde a quello della mossa usata, moltiplica per 1.5
+        double multiplier = 1;
+        for (size_t i = 0; i < this->GetTypes().size(); i++)
+        {
+            /* code */
+            if (this->GetTypes()[i] == this->moves[index].GetType())
+            {
+                /* code */
+                multiplier *= 1.5;
+            }
+        }
+
         // gestione del danno sulla base dei vari tipi
-        
+        for (size_t i = 0; i < target.GetTypes().size(); i++)
+        {
+            /* code */
+            multiplier *= pokemon_type_map[this->moves[index].GetType()][target.GetTypes()[i]];
+        }
+
+        if (multiplier >= 2)
+        {
+            /* code */
+            Common::slow_print("E' superefficace!!");
+        }
+        else if (multiplier <= 0.5)
+        {
+            /* code */
+            Common::slow_print("Non è molto efficace...");
+        }
+        damage *= multiplier;
+
         target.TakeDamage(damage);
         this->moves[index].SetPowerPoints(this->moves[index].GetPowerPoints() - 1);
     }

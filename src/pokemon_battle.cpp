@@ -42,7 +42,9 @@ void switchPokemon(PokemonTrainer &trainer, int index) {
 
 std::unordered_map<int, FUNCPTR> func_map = {{1, &switchPokemon}};
 
+
 void PokemonBattle::battleLoop() {
+
     Common::slow_print("Comincia la battaglia!!");
     Common::slow_print("Vai "+player->getCurrentPokemon()->GetName() + "!");
     Common::slow_print("Vai "+enemy->getCurrentPokemon()->GetName() + "!");
@@ -52,9 +54,9 @@ void PokemonBattle::battleLoop() {
     
     std::vector<Pokemon> player_pokemons = player->GetPokemons();
     std::vector<Pokemon> enemy_pokemons = enemy->GetPokemons();
-    while (std::any_of(player_pokemons.begin(), player_pokemons.end(), [](Pokemon i) { return i.IsAlive(); })
+    while (player_pokemons.size() > 0
     &&
-    std::any_of(enemy_pokemons.begin(), enemy_pokemons.end(), [](Pokemon i) { return i.IsAlive(); })
+    enemy_pokemons.size() > 0
     )
     {
         // get trainer choice
@@ -105,7 +107,45 @@ void PokemonBattle::battleLoop() {
                 player->getCurrentPokemon()->UsePokemonMove(player_choices[1], *target, pokemon_types_map);
             }
         }
-        player_pokemons = player->getPokemons();
-        enemy_pokemons = enemy->getPokemons();
+
+
+
+        // da migliorare: bisogna trovare un modo più efficace per filtrare questo vector
+        player_pokemons = {};   
+        for (size_t i = 0; i < player->GetPokemons().size(); i++)
+        {
+            /* code */
+            if (player->GetPokemons()[i].IsAlive())
+                player_pokemons.push_back(player->GetPokemons()[i]);
+        }
+
+        enemy_pokemons = {};   
+        for (size_t i = 0; i < enemy->GetPokemons().size(); i++)
+        {
+            /* code */
+            if (enemy->GetPokemons()[i].IsAlive())
+                enemy_pokemons.push_back(enemy->GetPokemons()[i]);
+        }
+
+        // se alla fine del turno uno dei due pokemon è ko, bisogna sostituirlo
+        if (!player->getCurrentPokemon()->IsAlive() && player_pokemons.size() > 0)
+        {
+            /* code */
+            Common::slow_print("Con chi vuoi sostituire " + player->getCurrentPokemon()->GetName() + " ?");
+            int index = player->changePokemon();
+            Common::slow_print(player->getCurrentPokemon()->GetName() + " basta così, rientra!");
+            player->setCurrentPokemon(index);
+            Common::slow_print("Vai " + player->getCurrentPokemon()->GetName());
+        }
+        if (!enemy->getCurrentPokemon()->IsAlive() && enemy_pokemons.size() > 0)
+        {
+            /* code */
+            Common::slow_print("Con chi vuoi sostituire " + enemy->getCurrentPokemon()->GetName() + " ?");
+            int index = enemy->changePokemon();
+            Common::slow_print(enemy->getCurrentPokemon()->GetName() + " basta così, rientra!");
+            enemy->setCurrentPokemon(index);
+            Common::slow_print("Vai " + enemy->getCurrentPokemon()->GetName());
+        }
+        
     }
 }

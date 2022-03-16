@@ -1,15 +1,15 @@
 # include "pokemon_trainer.h"
 
 int PokemonTrainer::changePokemon() {
-    for (size_t i = 0; i < this->getPokemons().size(); i++)
+    for (size_t i = 0; i < this->GetPokemons().size(); i++)
         {
-        if (this->getPokemons()[i].IsAlive())
-            std::cout << i << ": " << this->getPokemons()[i].GetName() << " ";
+        if (this->GetPokemons()[i].IsAlive())
+            std::cout << i << ": " << this->GetPokemons()[i].GetName() << " ";
         }
     std::cout << std::endl;
     int x;
     std::cin >> x;
-    x = Common::checkInput(x, (this->getPokemons().size()-1));
+    x = Common::checkInput(x, (this->GetPokemons().size()-1));
     std::cout << x << std::endl;
     return x;
 };

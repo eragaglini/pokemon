@@ -18,7 +18,6 @@ public:
     std::vector<Pokemon> GetPokemons(void) const { return this->pokemons; }
     Pokemon * getCurrentPokemon() const { return (this->current_pokemon); }
     void setCurrentPokemon(int index) { this->current_pokemon = &(this->pokemons[index]); }
-    std::vector<Pokemon> getPokemons() const { return (this->pokemons); }
 
     int changePokemon();
     int usePokemonMove();
