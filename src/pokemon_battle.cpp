@@ -5,7 +5,6 @@ PokemonBattle::PokemonBattle(PokemonTrainer &_player, PokemonTrainer &_enemy)
 {
     player = &_player;
     enemy = &_enemy;
-    this->pokemon_types_map = Common::GetPokemonTypesMap();
 }
 
 PokemonBattle::~PokemonBattle()
@@ -34,8 +33,24 @@ std::vector<int> PokemonBattle::getTrainerChoice(PokemonTrainer &trainer)
     return choices;
 }
 
+typedef void(*FUNCPTR)(PokemonTrainer &trainer, int index); // our typedef
+
+void switchPokemon(PokemonTrainer &trainer, int index) {
+    Common::slow_print(trainer.getCurrentPokemon()->GetName() + " rientra!");
+    trainer.setCurrentPokemon(index);
+    Common::slow_print("Vai " + trainer.getCurrentPokemon()->GetName() + "!!" );
+}
+
+std::unordered_map<int, FUNCPTR> func_map = {{1, &switchPokemon}};
+
 void PokemonBattle::battleLoop() {
     Common::slow_print("Comincia la battaglia!!");
+    Common::slow_print("Vai "+player->getCurrentPokemon()->GetName() + "!");
+    Common::slow_print("Vai "+enemy->getCurrentPokemon()->GetName() + "!");
+
+    std::unordered_map<std::string, std::unordered_map<std::string, double>>  
+    pokemon_types_map = Common::GetPokemonTypesMap();
+    
     std::vector<Pokemon> player_pokemons = player->GetPokemons();
     std::vector<Pokemon> enemy_pokemons = enemy->GetPokemons();
     while (std::any_of(player_pokemons.begin(), player_pokemons.end(), [](Pokemon i) { return i.IsAlive(); })
@@ -43,66 +58,48 @@ void PokemonBattle::battleLoop() {
     std::any_of(enemy_pokemons.begin(), enemy_pokemons.end(), [](Pokemon i) { return i.IsAlive(); })
     )
     {
-        /* code */
-        Common::slow_print("Vai "+player->getCurrentPokemon()->GetName() + "!");
-        Common::slow_print("Vai "+enemy->getCurrentPokemon()->GetName() + "!");
 
+        // get trainer choice
         Common::slow_print("Cosa deve fare " + player->getCurrentPokemon()->GetName() + "?");
         std::vector<int> player_choices = getTrainerChoice(*player);
 
         Common::slow_print("Cosa deve fare " + enemy->getCurrentPokemon()->GetName() + "?");
         std::vector<int> enemy_choices = getTrainerChoice(*enemy);
 
-        if (player_choices[0] == 0 && enemy_choices[0] == 0)
+        // both pokemons attack
+        if (player_choices[0] == 0 && enemy_choices[0] == 0) 
         {
-            /* i pokemon si attaccano */
-            if (player->getCurrentPokemon()->GetSpeed() >= enemy->getCurrentPokemon()->GetSpeed())
-            {
-                /* code */
-                Pokemon target = *enemy->getCurrentPokemon();
-                player->getCurrentPokemon()->UsePokemonMove(player_choices[1], target);
-                target = *player->getCurrentPokemon();
-                enemy->getCurrentPokemon()->UsePokemonMove(enemy_choices[1], target);
+            if (player->getCurrentPokemon()->GetSpeed() >= enemy->getCurrentPokemon()->GetSpeed()) {
+                Pokemon * target = enemy->getCurrentPokemon();
+                player->getCurrentPokemon()->UsePokemonMove(player_choices[1], *target, pokemon_types_map);
+                if (target->IsAlive()) {
+                    target = player->getCurrentPokemon();
+                    enemy->getCurrentPokemon()->UsePokemonMove(enemy_choices[1], *target, pokemon_types_map);
+                }
             }
             else
             {
-                /* code */
-                Pokemon target = *player->getCurrentPokemon();
-                enemy->getCurrentPokemon()->UsePokemonMove(enemy_choices[1], target);
-                target = *enemy->getCurrentPokemon();
-                player->getCurrentPokemon()->UsePokemonMove(player_choices[1], target);
+                Pokemon * target = player->getCurrentPokemon();
+                enemy->getCurrentPokemon()->UsePokemonMove(enemy_choices[1], *target, pokemon_types_map);
+                if (target->IsAlive()) {
+                    target = enemy->getCurrentPokemon();
+                    player->getCurrentPokemon()->UsePokemonMove(player_choices[1], *target, pokemon_types_map);
+                }
             }
         }
         else {
-            if (player_choices[0] == 1)
+            func_map[player_choices[0]](*player, player_choices[1]);
+
+            if (enemy_choices[0] == 0)
             {
-                /* code */
-                Common::slow_print(player->getCurrentPokemon()->GetName() + " rientra!");
-                player->setCurrentPokemon(player_choices[1]);
-                Common::slow_print("Vai " + player->getCurrentPokemon()->GetName() + "!!");
-                if (enemy_choices[0] == 1)
-                {
-                    /* code */
-                    Common::slow_print(enemy->getCurrentPokemon()->GetName() + " rientra!");
-                    enemy->setCurrentPokemon(enemy_choices[1]);
-                    Common::slow_print("Vai " + enemy->getCurrentPokemon()->GetName() + "!!");
-                }
-                else {
-                    Pokemon target = *player->getCurrentPokemon();
-                    enemy->getCurrentPokemon()->UsePokemonMove(enemy_choices[1], target);
-                }
+                Pokemon * target = player->getCurrentPokemon();
+                enemy->getCurrentPokemon()->UsePokemonMove(enemy_choices[1], *target, pokemon_types_map);
             }
             else
             {
-                /* code */
-                Pokemon target = *enemy->getCurrentPokemon();
-                player->getCurrentPokemon()->UsePokemonMove(player_choices[1], target);
-                Common::slow_print(enemy->getCurrentPokemon()->GetName() + " rientra!");
-                enemy->setCurrentPokemon(enemy_choices[1]);
-                Common::slow_print("Vai " + enemy->getCurrentPokemon()->GetName() + "!!");
+                func_map[enemy_choices[0]](*enemy, enemy_choices[1]);
             }
-        };
-
+        }
         player_pokemons = player->getPokemons();
         enemy_pokemons = enemy->getPokemons();
     }

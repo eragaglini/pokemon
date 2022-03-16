@@ -5,7 +5,8 @@ PokemonMove::~PokemonMove()
 {
 }
 
-void Pokemon::UsePokemonMove(int index, Pokemon & target) {
+void Pokemon::UsePokemonMove(int index, Pokemon & target, std::unordered_map<std::string, std::unordered_map<std::string, double>> 
+    & pokemon_type_map) {
     Common::slow_print(this->GetName() + " usa " + this->GetMoves()[index].GetName() + "!!");
     int damage = 0;
     if (this->GetMoves()[index].GetCategory() == moveCategory::physicalMove) {

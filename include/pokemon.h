@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <unordered_map>
 
 enum class moveCategory {physicalMove, specialMove};
 
@@ -57,7 +58,8 @@ class Pokemon {
         // take damage
         void TakeDamage(const int damage);
         // use pokemon move
-        void UsePokemonMove(int index, Pokemon & target);
+        void UsePokemonMove(int index, Pokemon & target, std::unordered_map<std::string, std::unordered_map<std::string, double>> 
+        & pokemon_type_map);
 
     private:
         std::string name;
