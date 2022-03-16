@@ -108,24 +108,14 @@ void PokemonBattle::battleLoop() {
             }
         }
 
+        player_pokemons = player->GetPokemons();
+        enemy_pokemons = enemy->GetPokemons();
 
-
-        // da migliorare: bisogna trovare un modo più efficace per filtrare questo vector
-        player_pokemons = {};   
-        for (size_t i = 0; i < player->GetPokemons().size(); i++)
-        {
-            /* code */
-            if (player->GetPokemons()[i].IsAlive())
-                player_pokemons.push_back(player->GetPokemons()[i]);
-        }
-
-        enemy_pokemons = {};   
-        for (size_t i = 0; i < enemy->GetPokemons().size(); i++)
-        {
-            /* code */
-            if (enemy->GetPokemons()[i].IsAlive())
-                enemy_pokemons.push_back(enemy->GetPokemons()[i]);
-        }
+        player_pokemons.erase( std::remove_if(player_pokemons.begin(), player_pokemons.end(), 
+        [](Pokemon pokemon) { return !pokemon.IsAlive(); }), player_pokemons.end());
+        
+        enemy_pokemons.erase( std::remove_if(enemy_pokemons.begin(), enemy_pokemons.end(), 
+        [](Pokemon pokemon) { return !pokemon.IsAlive(); }), enemy_pokemons.end());
 
         // se alla fine del turno uno dei due pokemon è ko, bisogna sostituirlo
         if (!player->getCurrentPokemon()->IsAlive() && player_pokemons.size() > 0)
