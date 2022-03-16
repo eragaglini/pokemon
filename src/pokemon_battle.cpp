@@ -58,7 +58,6 @@ void PokemonBattle::battleLoop() {
     std::any_of(enemy_pokemons.begin(), enemy_pokemons.end(), [](Pokemon i) { return i.IsAlive(); })
     )
     {
-
         // get trainer choice
         Common::slow_print("Cosa deve fare " + player->getCurrentPokemon()->GetName() + "?");
         std::vector<int> player_choices = getTrainerChoice(*player);
@@ -66,6 +65,7 @@ void PokemonBattle::battleLoop() {
         Common::slow_print("Cosa deve fare " + enemy->getCurrentPokemon()->GetName() + "?");
         std::vector<int> enemy_choices = getTrainerChoice(*enemy);
 
+        
         // both pokemons attack
         if (player_choices[0] == 0 && enemy_choices[0] == 0) 
         {
@@ -88,16 +88,22 @@ void PokemonBattle::battleLoop() {
             }
         }
         else {
-            func_map[player_choices[0]](*player, player_choices[1]);
-
-            if (enemy_choices[0] == 0)
-            {
-                Pokemon * target = player->getCurrentPokemon();
-                enemy->getCurrentPokemon()->UsePokemonMove(enemy_choices[1], *target, pokemon_types_map);
+            if (player_choices[0] != 0) {
+                func_map[player_choices[0]](*player, player_choices[1]);
+                if (enemy_choices[0] == 0)
+                {
+                    Pokemon * target = player->getCurrentPokemon();
+                    enemy->getCurrentPokemon()->UsePokemonMove(enemy_choices[1], *target, pokemon_types_map);
+                }
+                else
+                {
+                    func_map[enemy_choices[0]](*enemy, enemy_choices[1]);
+                }
             }
-            else
-            {
+            else {
                 func_map[enemy_choices[0]](*enemy, enemy_choices[1]);
+                Pokemon * target = enemy->getCurrentPokemon();
+                player->getCurrentPokemon()->UsePokemonMove(player_choices[1], *target, pokemon_types_map);
             }
         }
         player_pokemons = player->getPokemons();

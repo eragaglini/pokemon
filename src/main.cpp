@@ -25,7 +25,7 @@ int main()
   // Pikachu
   PokemonMove nuzzle = PokemonMove("Nuzzle", 20, 20, moveCategory::physicalMove, "electric");
 
-  Pokemon pikachu = Pokemon("Pikachu", {"electric"}, 55, 40, 50, 50, 90, 350, {tackle, vine_whip});
+  Pokemon pikachu = Pokemon("Pikachu", {"electric"}, 55, 40, 50, 50, 90, 350, {nuzzle});
 
 
   PokemonTrainer player = PokemonTrainer({charmander, bulbasaur});
