@@ -1,5 +1,4 @@
 #include "pokemon_battle.h"
-#include <iostream>
 
 PokemonBattle::PokemonBattle(PokemonTrainer &_player, PokemonTrainer &_enemy)
 {

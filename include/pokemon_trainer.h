@@ -1,7 +1,7 @@
 #ifndef POKEMON_TRAINER_H
 #define POKEMON_TRAINER_H
 
-//#include <vector>
+
 #include "pokemon.h"
 #include "common.h"
 

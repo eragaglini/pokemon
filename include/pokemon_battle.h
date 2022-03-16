@@ -1,10 +1,8 @@
 #ifndef POKEMON_GAME_H
 #define POKEMON_GAME_H
 
-//#include <vector>
-//#include <unordered_map>
 #include "pokemon_trainer.h"
-#include "common.h"
+//#include "common.h"
 
 
 class PokemonBattle
